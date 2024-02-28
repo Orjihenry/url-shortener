@@ -22,3 +22,11 @@ class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Login")
+
+
+# URL Shortener Form
+class UrlForm(FlaskForm):
+    long_url = StringField("Enter URL", validators=[DataRequired()])
+    short_url = StringField("Generated Short URL")
+    custom_url = StringField("Enter Custom URL Alias")
+    submit = SubmitField('Submit')
