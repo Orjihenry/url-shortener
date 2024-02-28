@@ -4,10 +4,10 @@ import secrets
 import hashlib
 
 from flask import Flask, render_template, flash, session, url_for, redirect
-from flask_login import UserMixin, login_user
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
-from webforms import RegForm, UrlForm
+from webforms import RegForm, UrlForm, LoginForm
 from datetime import datetime
 
 
@@ -16,6 +16,10 @@ app = Flask(__name__)
 app.config.from_object(app_config)
 db = SQLAlchemy(app)
 salt = secrets.token_hex(16)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'user_login'
 
 
 class Urls(db.Model):
@@ -71,6 +75,51 @@ def reg_user():
         elif user is not None:
             flash('Email already exists!')
     return render_template("register.html", form=form, flash=flash)
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def user_login():
+    """
+        User Login
+    :return:
+    """
+    email = None
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user and verify_password(form.password.data, user.password_hash, user.salt):
+            flash('Login Successful')
+
+            # Set user session
+            session['user_id'] = user.id
+            login_user(user)
+            return redirect(url_for('index'))  # Redirect to a dashboard route
+        else:
+            flash('Invalid email or password')
+
+    return render_template("signin.html", form=form, flash=flash)
+
+
+# Logout function
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash('Logout Successfully!')
+    return redirect(url_for('user_login'))
+
+
+def verify_password(password, password_hash, salt):
+    """
+        Verify if password is EqualTo hashed password in db
+        :param password:
+        :param password_hash:
+        :param salt:
+        :return:
+    """
+    hashed_pass = (password + salt).encode('utf-8')
+    computed_hash = hashlib.sha256(hashed_pass).hexdigest()
+    return computed_hash == password_hash
 
 
 def generate_url(length=6):
