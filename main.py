@@ -2,6 +2,7 @@ import random
 import string
 
 from flask import Flask, render_template
+from flask_login import UserMixin
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -24,6 +25,16 @@ class Urls(db.Model):
 
     def __repr__(self):
         return f'<Urls {self.short_url}>'
+
+
+class Users(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(225), nullable=False)
+    email = db.Column(db.String(225), nullable=False, unique=True)
+    password_hash = db.Column(db.String(225))
+    salt = db.Column(db.String(32))
+    user_urls = db.relationship('Urls', backref='poster')
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 def generate_url(length=6):
