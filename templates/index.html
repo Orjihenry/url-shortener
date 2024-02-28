@@ -15,6 +15,41 @@
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5">
                   <h2>URL Shortener</h2>
+
+                  <form method="POST" action="/">
+                      {{ form.hidden_tag() }}
+                      {% if current_user.is_authenticated %}
+                        <div class="form-outline mb-4">
+                            {{ form.long_url.label }}
+                            {{ form.long_url(type="url", class="form-control", id="form3Example1") }}
+                        </div>
+                        <div class="form-outline mb-4">
+                            {{ form.custom_url.label }}
+                            {{ form.custom_url(class="form-control", id="form3Example1") }}
+                        </div>
+                      {% else %}
+                        <div class="form-outline mb-4">
+                            {{ form.long_url.label }}
+                            {{ form.long_url(type="url", class="form-control", id="form3Example1") }}
+                        </div>
+                      {% endif %}
+
+                      <!--        {{ form.short_url.label }} {{ form.short_url(disabled=True) }}-->
+                      {% if short_url %}
+                        <div class="form-outline mb-4">
+                            {{ form.short_url.label }}
+                            {{ form.short_url(type="url", class="form-control", id="form3Example1") }}
+                            <input type="text" class="form-control" id="form3Example1" disabled value="{{ request.url_root }}{{ short_url }}">
+                        </div>
+                      {% else %}
+                        <div class="form-outline mb-4">
+                            {{ form.short_url.label }}
+                            <input type="text" class="form-control", id="form3Example2" disabled>
+                        </div>
+                      {% endif %}
+                      {{ form.submit(class="btn btn-primary btn-block mb-4 btn-sub-val") }}
+                  </form>
+                
               </div>
             </div>
           </div>

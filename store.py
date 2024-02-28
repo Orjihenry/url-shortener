@@ -44,12 +44,6 @@ class Users(UserMixin, db.Model):
     user_urls = db.relationship('Urls', backref='poster')
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return str(self.id)
-
 
 @app.route("/register", methods=['GET', 'POST'])
 def reg_user():
@@ -104,11 +98,6 @@ def user_login():
             flash('Invalid email or password')
 
     return render_template("signin.html", form=form, flash=flash)
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return Users.query.get(int(user_id))
 
 
 # Logout function
