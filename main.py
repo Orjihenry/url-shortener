@@ -1,3 +1,6 @@
+import random
+import string
+
 from flask import Flask, render_template
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
@@ -21,6 +24,12 @@ class Urls(db.Model):
 
     def __repr__(self):
         return f'<Urls {self.short_url}>'
+
+
+def generate_url(length=6):
+    chars = string.ascii_letters + string.digits
+    short_url = "".join(random.choice(chars) for _ in range(length))
+    return short_url
 
 
 @app.route("/", methods=["GET", "POST"])
