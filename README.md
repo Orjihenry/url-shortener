@@ -91,6 +91,6 @@ Please adhere to the following guidelines when using GitHub Issues:
 Contributions are welcome! If you have any improvements or features, please submit a pull request.
 
   - **Branch Naming:** Name your branch 'bug-fix' or 'features' to make corrections or add new features.
-  - **Pull Requests**: Submit a pull request detailing the Change you made.
+  - **Pull Requests**: Submit a pull request detailing the change(s) you made.
 
 Happy Hacking!
