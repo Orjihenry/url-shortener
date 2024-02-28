@@ -7,7 +7,7 @@ from flask import Flask, render_template, flash, session, url_for, redirect
 from flask_login import UserMixin, login_user
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
-from webforms import RegForm
+from webforms import RegForm, UrlForm
 from datetime import datetime
 
 
@@ -81,7 +81,59 @@ def generate_url(length=6):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    """
+        Renders URL generation form
+    :return:
+    """
+    form = UrlForm()
+    short_url = None
+    long_url = None
+    custom_url = None
+    url_visits = session.get(Urls.visits)
+    url_user_id = session.get('user_id')
+
+    if url_user_id:
+        """
+            Renders shortened urls generation form
+            With custom short_url if user is registered.
+        """
+        if form.validate_on_submit():
+            short_url = generate_url()
+            store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
+
+            custom_url = form.custom_url.data
+
+            if custom_url:
+                short_url = custom_url
+
+            if store_urls is None:
+                store_urls = Urls(long_url=form.long_url.data,
+                                  short_url=short_url,
+                                  custom_url=form.custom_url.data
+                                  )
+                db.session.add(store_urls)
+                db.session.commit()
+    else:
+        """
+            Renders shortened urls generation form
+            Without custom short_url if user is not registered.
+        """
+        if form.validate_on_submit():
+            short_url = generate_url()
+            store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
+
+            if store_urls is None:
+                store_urls = Urls(long_url=form.long_url.data, short_url=short_url)
+                db.session.add(store_urls)
+                db.session.commit()
+
+    return render_template("index.html",
+                           form=form,
+                           short_url=short_url,
+                           long_url=long_url,
+                           custom_url=custom_url,
+                           visits=url_visits
+                           )
 
 
 if __name__ == "__main__":
