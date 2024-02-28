@@ -136,5 +136,25 @@ def index():
                            )
 
 
+@app.route("/<short_url>")
+def redirect_url(short_url):
+    """
+        Redirects short urls to long urls.
+        Calculates and stores visitors to short url
+    :param short_url:
+    :return:
+    """
+    url_entry = Urls.query.filter_by(short_url=short_url).first()
+    if url_entry:
+
+        url_entry.visits += 1
+
+        db.session.commit()
+
+        return redirect(url_entry.long_url)
+    else:
+        return "URL NOT FOUND", 404
+
+
 if __name__ == "__main__":
     app.run(debug=True)
