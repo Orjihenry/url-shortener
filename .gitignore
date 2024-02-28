@@ -1,0 +1,27 @@
+# Virtual Environment
+venv
+
+# Code Editors
+.idea
+.vscode
+
+# Config file
+config.py
+
+# Environment
+.env
+
+#DB
+*.sqlite
+
+# OS-Specific Files
+.DS_Store
+Thumbs.db
+
+# Logs and Temporary Files
+instance
+logs
+*.log
+*.pyc
+*.pyo
+__pycache__/
