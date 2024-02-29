@@ -19,37 +19,36 @@
                   <form method="POST" action="/">
                       {{ form.hidden_tag() }}
                       {% if current_user.is_authenticated %}
-                        <div class="form-outline mb-4">
-                            {{ form.long_url.label }}
-                            {{ form.long_url(type="url", class="form-control", id="form3Example1") }}
+                        <div class="form-outline mb-4" data-mdb-input-init>
+                            {{ form.long_url(type="url", class="form-control", id="formControlDefault") }}
+                            {{ form.long_url.label(class="form-label") }}
                         </div>
-                        <div class="form-outline mb-4">
-                            {{ form.custom_url.label }}
-                            {{ form.custom_url(class="form-control", id="form3Example1") }}
+                        <div class="form-outline mb-4" data-mdb-input-init>
+                            {{ form.custom_url(class="form-control", id="formControlDefault") }}
+                            {{ form.custom_url.label(class="form-label") }}
                         </div>
                       {% else %}
-                        <div class="form-outline mb-4">
-                            {{ form.long_url.label }}
-                            {{ form.long_url(type="url", class="form-control", id="form3Example1") }}
+                        <div class="form-outline mb-4" data-mdb-input-init>
+                            {{ form.long_url(type="url", class="form-control", id="formControlDefault") }}
+                            {{ form.long_url.label(class="form-label") }}
                         </div>
                       {% endif %}
 
-                      <!--        {{ form.short_url.label }} {{ form.short_url(disabled=True) }}-->
                       {% if short_url %}
-                        <div class="form-outline mb-4">
-                            {{ form.short_url.label }}
-                            {{ form.short_url(type="url", class="form-control", id="form3Example1") }}
-                            <input type="text" class="form-control" id="form3Example1" disabled value="{{ request.url_root }}{{ short_url }}">
+                        <div class="form-outline mb-4" data-mdb-input-init>
+                            <input type="text" class="form-control" id="formControlDefault"
+                                   disabled value="{{ request.url_root }}{{ short_url }}">
+                            {{ form.short_url.label(class="form-label") }}
                         </div>
                       {% else %}
-                        <div class="form-outline mb-4">
-                            {{ form.short_url.label }}
+                        <div class="form-outline mb-4" data-mdb-input-init>
                             <input type="text" class="form-control", id="form3Example2" disabled>
+                            {{ form.short_url.label(class="form-label") }}
                         </div>
                       {% endif %}
                       {{ form.submit(class="btn btn-primary btn-block mb-4 btn-sub-val") }}
                   </form>
-                
+
               </div>
             </div>
           </div>
@@ -71,4 +70,10 @@
       </div>
     </section>
     <!-- Section: Design Block -->
+
+    <script>
+        import { Input, initMDB } from "mdb-ui-kit";
+
+        initMDB({ Input });
+    </script>
 {% endblock %}
