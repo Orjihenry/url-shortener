@@ -27,7 +27,7 @@ class Urls(db.Model):
     long_url = db.Column(db.String(225), nullable=False)
     short_url = db.Column(db.String(225), nullable=False, unique=True)
     url_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    custom_url = db.Column(db.String(15), unique=True)
+    custom_url = db.Column(db.String(15))
     visits = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -103,12 +103,18 @@ def user_login():
         else:
             flash('Invalid email or password')
 
-    return render_template("signin.html", form=form, flash=flash)
+    return render_template("login.html", form=form, flash=flash)
 
 
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
 
 
 # Logout function
@@ -213,7 +219,7 @@ def redirect_url(short_url):
 
         return redirect(url_entry.long_url)
     else:
-        return "URL NOT FOUND", 404
+        return render_template('404.html')
 
 
 # Error handlers
