@@ -39,16 +39,15 @@ This is a URL shortener project that allows both registered and unregistered use
 3. Set up the database:
 
     - Create a MySQL database named `url_shortener`.
+    - Copy config_example.py to a new file named config.py.
+    - Replace placeholder values in config.py with actual config values,
+      such as database credentials and secret keys.
 
 4. Run the application:
 
     ```bash
     python main.py
     ```
-   Or you can run:
-    ```bash
-   python __init__.py
-   ```
 
 5. Open your web browser and visit [http://localhost:5000](http://localhost:5000).
 
