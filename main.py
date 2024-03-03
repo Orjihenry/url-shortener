@@ -4,7 +4,7 @@ import secrets
 import hashlib
 
 from flask import Flask, render_template, flash, session, url_for, redirect
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
 from webforms import RegForm, UrlForm, LoginForm
@@ -114,7 +114,7 @@ def load_user(user_id):
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('dashboard.html', user=current_user)
 
 
 # Logout function
@@ -175,6 +175,7 @@ def index():
             if store_urls is None:
                 store_urls = Urls(long_url=form.long_url.data,
                                   short_url=short_url,
+                                  url_user_id=url_user_id,
                                   custom_url=form.custom_url.data
                                   )
                 db.session.add(store_urls)
