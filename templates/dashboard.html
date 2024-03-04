@@ -61,7 +61,7 @@
 
 <body>
   <!-- Section: Design Block -->
-  <section class="background-radial-gradient overflow-hidden" style="height: 1000px;">
+  <section class="background-radial-gradient overflow-hidden">
     <div class="container">
       <a href="{{ url_for('logout') }}" class="float-end btn btn-danger">Logout</a>
       <a href="{{ url_for('index') }}" class="float-end me-2 btn btn-danger">Shorten URL</a>
@@ -116,7 +116,9 @@
           {% for url in user.user_urls %}
             <tr>
                 <td>{{ request.url_root }}{{ url.short_url }}</td>
-                <td>{{ request.url_root }}{{ url.short_url }}</td>
+                <td>
+                  <a href="{{ url.short_url }}" target="_blank">{{ request.url_root }}{{ url.short_url }}</a>
+                </td>
                 <td>{{ url.long_url }}</td>
                 <td>{{ url.visits }}</td>
             </tr>
