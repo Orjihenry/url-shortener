@@ -5,6 +5,8 @@ import hashlib
 
 from flask import Flask, render_template, flash, session, url_for, redirect
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from sqlalchemy.exc import IntegrityError
+
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
 from webforms import RegForm, UrlForm, LoginForm
@@ -74,12 +76,12 @@ def reg_user():
             db.session.add(user)
             db.session.commit()
 
-            flash('User Registered Successfully')
+            flash('User Registered Successfully', 'error')
             session['user_id'] = user.id
             login_user(user)
             return redirect(url_for('index'))
         elif user is not None:
-            flash('Email already exists!')
+            flash('Email already exists!', 'error')
     return render_template("register.html", form=form, flash=flash)
 
 
@@ -94,14 +96,14 @@ def user_login():
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user and verify_password(form.password.data, user.password_hash, user.salt):
-            flash('Login Successful')
+            flash('Login Successful', 'error')
 
             # Set user session
             session['user_id'] = user.id
             login_user(user)
             return redirect(url_for('index'))  # Redirect to a dashboard route
         else:
-            flash('Invalid email or password')
+            flash('Invalid email or password', 'error')
 
     return render_template("login.html", form=form, flash=flash)
 
@@ -122,7 +124,7 @@ def dashboard():
 @login_required
 def logout():
     logout_user()
-    flash('Logout Successfully!')
+    flash('Logout Successful!', 'error')
     return redirect(url_for('user_login'))
 
 
@@ -167,19 +169,30 @@ def index():
             short_url = generate_url()
             store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
 
-            custom_url = form.custom_url.data
+            joined = form.custom_url.data.split()
+            custom_url = '-'.join(joined[0:])
 
-            if custom_url:
-                short_url = custom_url
+            try:
+                db_check = Urls.query.filter_by(custom_url=custom_url).first()
+                if db_check:
+                    flash('Alias is unavailable. Please choose another one.', 'error')
 
-            if store_urls is None:
-                store_urls = Urls(long_url=form.long_url.data,
-                                  short_url=short_url,
-                                  url_user_id=url_user_id,
-                                  custom_url=form.custom_url.data
-                                  )
-                db.session.add(store_urls)
-                db.session.commit()
+                if custom_url:
+                    short_url = custom_url
+
+                if store_urls is None:
+                    store_urls = Urls(long_url=form.long_url.data,
+                                      short_url=short_url,
+                                      url_user_id=url_user_id,
+                                      custom_url=form.custom_url.data
+                                      )
+                    db.session.add(store_urls)
+                    db.session.commit()
+            except IntegrityError as e:
+                db.session.rollback()
+                flash('Error: Alias is not available. Please choose a different one.', 'error')
+                short_url = ''
+
     else:
         """
             Renders shortened urls generation form
