@@ -149,10 +149,6 @@ def generate_url(length=6):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    """
-        Renders URL generation form
-    :return:
-    """
     form = UrlForm()
     short_url = None
     long_url = None
@@ -161,43 +157,48 @@ def index():
     url_user_id = session.get('user_id')
 
     if url_user_id:
-        """
-            Renders shortened urls generation form
-            With custom short_url if user is registered.
-        """
         if form.validate_on_submit():
             short_url = generate_url()
             store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
 
-            joined = form.custom_url.data.split()
-            custom_url = '-'.join(joined[0:])
+            # Check if custom_url is not empty
+            if form.custom_url.data:
+                joined = form.custom_url.data.split()
+                custom_url = '-'.join(joined[0:])
 
-            try:
-                db_check = Urls.query.filter_by(custom_url=custom_url).first()
-                if db_check:
-                    flash('Alias is unavailable. Please choose another one.', 'error')
+                try:
+                    db_check = Urls.query.filter_by(custom_url=custom_url).first()
+                    if db_check:
+                        flash('Alias is not available. Please choose a different one.', 'error')
 
-                if custom_url:
-                    short_url = custom_url
+                    if custom_url:
+                        short_url = custom_url
 
+                    if store_urls is None:
+                        store_urls = Urls(
+                            long_url=form.long_url.data,
+                            short_url=short_url,
+                            url_user_id=url_user_id,
+                            custom_url=form.custom_url.data
+                        )
+                        db.session.add(store_urls)
+                        db.session.commit()
+                except IntegrityError as e:
+                    db.session.rollback()
+                    # flash('Error: Alias is not available. Please choose a different one.', 'error')
+                    short_url = ''
+            else:
+                # If custom_url is empty, generate short URL without custom alias
                 if store_urls is None:
-                    store_urls = Urls(long_url=form.long_url.data,
-                                      short_url=short_url,
-                                      url_user_id=url_user_id,
-                                      custom_url=form.custom_url.data
-                                      )
+                    store_urls = Urls(
+                        long_url=form.long_url.data,
+                        short_url=short_url,
+                        url_user_id=url_user_id
+                    )
                     db.session.add(store_urls)
                     db.session.commit()
-            except IntegrityError as e:
-                db.session.rollback()
-                flash('Error: Alias is not available. Please choose a different one.', 'error')
-                short_url = ''
 
     else:
-        """
-            Renders shortened urls generation form
-            Without custom short_url if user is not registered.
-        """
         if form.validate_on_submit():
             short_url = generate_url()
             store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
