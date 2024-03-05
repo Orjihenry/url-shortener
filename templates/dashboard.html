@@ -113,7 +113,7 @@
           </thead>
           <tbody id="urlTableBody">
   
-          {% for url in user.user_urls %}
+          {% for url in user.user_urls[::-1] %}
             <tr>
                 <td>{{ request.url_root }}{{ url.short_url }}</td>
                 <td>
