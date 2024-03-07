@@ -1,85 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Shortener</title>
-
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-  <!-- MDB -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet" />
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-  <style>
-    .background-radial-gradient {
-      background-color: hsl(218, 41%, 15%);
-      background-image: radial-gradient(650px circle at 0% 0%,
-          hsl(218, 41%, 35%) 15%,
-          hsl(218, 41%, 30%) 35%,
-          hsl(218, 41%, 20%) 75%,
-          hsl(218, 41%, 19%) 80%,
-          transparent 100%),
-        radial-gradient(1250px circle at 100% 100%,
-          hsl(218, 41%, 45%) 15%,
-          hsl(218, 41%, 30%) 35%,
-          hsl(218, 41%, 20%) 75%,
-          hsl(218, 41%, 19%) 80%,
-          transparent 100%);
-    }
-
-    #radius-shape-1 {
-      height: 220px;
-      width: 220px;
-      top: -60px;
-      left: -130px;
-      background: radial-gradient(#44006b, #ad1fff);
-      overflow: hidden;
-    }
-
-    #radius-shape-2 {
-      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-      bottom: -60px;
-      right: -110px;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(#44006b, #ad1fff);
-      overflow: hidden;
-    }
-
-    .bg-glass {
-      background-color: hsla(0, 0%, 100%, 0.9) !important;
-      backdrop-filter: saturate(200%) blur(25px);
-    }
-
-    @media (min-width: 767.98px) {
-      .cus-margin {
-        margin-left: 80px;
-      }
-    }
-  </style>
-</head>
-
-<body>
+{% block content %}
   <!-- Section: Design Block -->
   <section class="background-radial-gradient overflow-hidden">
+    <h1 class="d-none">{% block title %}Dashboard{% endblock %}</h1>
     <div class="container">
       <a href="{{ url_for('logout') }}" class="float-end btn btn-danger">Logout</a>
-      <a href="{{ url_for('index') }}" class="float-end me-2 btn btn-danger">Shorten URL</a>
+      <a href="{{ url_for('index') }}" class="float-end me-2 btn btn-primary">Shorten URL</a>
 
       <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
 
         <div class="row gx-lg-5 align-items-center mb-5">
           <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-            <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+            <h2 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
               The best offer <br />
               <span style="color: hsl(218, 81%, 75%)">for your business</span>
-            </h1>
+            </h2>
             <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit.
               Temporibus, expedita iusto veniam atque, magni tempora mollitia
@@ -92,8 +28,13 @@
             <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
             <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
             <div class="card bg-glass">
-              <div class="card-body px-4 py-5 px-md-5">
-                <h2> Welcome {{ current_user.first_name }}</h2>
+              <div class="card-body px-4 py-5 px-md-5 text-center">
+                <h2 class="my-4 display-5 fw-bold ls-tight"> Welcome {{ current_user.first_name }}</h2>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <a type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#UpdateProfile">Update Profile</a>
+                  <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ChangePassword">Change Password</a>
+                  <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#DeleteAccount">Delete Account</a>
+                </div>
               </div>
             </div>
           </div>
@@ -103,7 +44,7 @@
 
     <section class="container mb-lg-3 cus-margin">
       <div class="row gx-lg-5 align-items-center mb-5 table-responsive-md">
-        <table class="table">
+        <table class="table table-hover">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -135,24 +76,10 @@
   </section>
   <!-- Section: Design Block -->
 
-  <script>
-    $(document).ready(function() {
-      // Get the table body
-      var tableBody = $('#urlTableBody');
+  <!-- Modals -->
+  {% include 'modals.html' %}
 
-      // Loop through each row in the table
-      tableBody.find('tr').each(function(index) {
-        // Add 1 to index since index is zero-based
-        var serialNumber = index + 1;
+  <!-- Modals Script -->
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 
-        // Add the serial number to the first cell (th) in each row
-        $(this).find('th:first').text(serialNumber);
-      });
-    });
-  </script>
-
-  <!-- MDB -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
-</body>
-
-</html>
+{% endblock %}

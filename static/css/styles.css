@@ -37,3 +37,9 @@
   background-color: hsla(0, 0%, 100%, 0.9) !important;
   backdrop-filter: saturate(200%) blur(25px);
 }
+
+@media (min-width: 767.98px) {
+  .cus-margin {
+    margin-left: 80px;
+  }
+}
