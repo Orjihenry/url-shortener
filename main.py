@@ -48,10 +48,11 @@ class Urls(db.Model):
 # User db model
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(225), nullable=False)
+    first_name = db.Column(db.String(225), nullable=False)
+    last_name = db.Column(db.String(225), nullable=False)
     email = db.Column(db.String(225), nullable=False, unique=True)
     password_hash = db.Column(db.String(225))
-    salt = db.Column(db.String(32))
+    salt = db.Column(db.String(32))  # Used for password hashing
     user_urls = db.relationship('Urls', backref='poster')
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -78,7 +79,8 @@ def reg_user():
             # Hash password using hashlib & secrets
             hashed_pass = form.password_hash.data + salt
             password = hashlib.sha256(hashed_pass.encode()).hexdigest()
-            user = Users(name=form.name.data,
+            user = Users(first_name=form.first_name.data,
+                         last_name=form.last_name.data,
                          email=form.email.data,
                          password_hash=password,
                          salt=salt

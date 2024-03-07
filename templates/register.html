@@ -61,7 +61,7 @@
 </head>
 <body>
     <!-- Section: Design Block -->
-    <section class="background-radial-gradient overflow-hidden" style="height: 1000px;">
+    <section class="background-radial-gradient overflow-hidden">
 
       <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
         <div class="row gx-lg-5 align-items-center mb-5">
@@ -96,10 +96,19 @@
                 <form method="POST" action="{{ url_for('reg_user') }}">
                   {{ form.hidden_tag() }}
                   <!-- 2 column grid layout with text inputs for the first and last names -->
-                  <div class="row">
-                    <div class="form-outline mb-4" data-mdb-input-init>
-                        {{ form.name(type="text", class="form-control", id="formControlDefault") }}
-                        {{ form.name.label(class="form-label", for="formControlDefault") }}
+                  <div class="row mb-4">
+                    <div class="col-md-6">
+                      <div class="form-outline" data-mdb-input-init>
+                        {{ form.first_name(type="text", class="form-control", id="formControlDefault") }}
+                        {{ form.first_name.label(class="form-label", for="formControlDefault") }}
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-outline" data-mdb-input-init>
+                        {{ form.last_name(type="text", class="form-control", id="formControlDefault") }}
+                        {{ form.last_name.label(class="form-label", for="formControlDefault") }}
+                      </div>
                     </div>
                   </div>
 
