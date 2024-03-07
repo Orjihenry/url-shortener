@@ -59,7 +59,7 @@
 
     @media (min-width: 767.98px) {
       .cus-margin {
-        margin-left: 170px;
+        margin-left: 80px;
       }
     }
   </style>
@@ -110,6 +110,7 @@
               <th scope="col">Short URL</th>
               <th scope="col">Long URL</th>
               <th scope="col">Visits</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody id="urlTableBody">
@@ -121,6 +122,10 @@
                 </td>
                 <td>{{ url.long_url }}</td>
                 <td>{{ url.visits }}</td>
+                <td>
+                  <a href="#" class="btn btn-primary btn-sm mb-2">Modify</a>
+                  <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </td>
               </tr>
             {% endfor %}
           </tbody>
