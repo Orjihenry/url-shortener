@@ -56,6 +56,12 @@
       background-color: hsla(0, 0%, 100%, 0.9) !important;
       backdrop-filter: saturate(200%) blur(25px);
     }
+
+    @media (min-width: 767.98px) {
+      .cus-margin {
+        margin-left: 170px;
+      }
+    }
   </style>
 </head>
 
@@ -69,7 +75,6 @@
       <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
 
         <div class="row gx-lg-5 align-items-center mb-5">
-
           <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
             <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
               The best offer <br />
@@ -84,25 +89,21 @@
           </div>
 
           <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-
             <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
             <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
-
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5">
                 <h2> Welcome {{ current_user.first_name }}</h2>
-
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
-    <section class="container mb-lg-3">
 
-      <div class="row gx-lg-5 align-items-center mb-5">
-        <table class="table col-lg-6 mb-5 mb-lg-0">
+    <section class="container mb-lg-3 cus-margin">
+      <div class="row gx-lg-5 align-items-center mb-5 table-responsive-md">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -112,20 +113,18 @@
             </tr>
           </thead>
           <tbody id="urlTableBody">
-  
-          {% for url in user.user_urls[::-1] %}
-            <tr>
-                <td>{{ request.url_root }}{{ url.short_url }}</td>
+            {% for url in user.user_urls[::-1] %}
+              <tr>
+                <th scope="row[serial_number]"></th>
                 <td>
                   <a href="{{ url.short_url }}" target="_blank">{{ request.url_root }}{{ url.short_url }}</a>
                 </td>
                 <td>{{ url.long_url }}</td>
                 <td>{{ url.visits }}</td>
-            </tr>
-          {% endfor %}
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
-        
       </div>
     </section>
   </section>
@@ -141,8 +140,8 @@
         // Add 1 to index since index is zero-based
         var serialNumber = index + 1;
 
-        // Add the serial number to the first cell (td) in each row
-        $(this).find('td:first').text(serialNumber);
+        // Add the serial number to the first cell (th) in each row
+        $(this).find('th:first').text(serialNumber);
       });
     });
   </script>
