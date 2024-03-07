@@ -4,7 +4,14 @@ import secrets
 import hashlib
 
 from flask import Flask, render_template, flash, session, url_for, redirect
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_login import (
+                         UserMixin,
+                         login_user,
+                         LoginManager,
+                         login_required,
+                         logout_user,
+                         current_user
+                         )
 from sqlalchemy.exc import IntegrityError
 
 from config import app_config
@@ -99,7 +106,10 @@ def user_login():
     form = LoginForm()
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
-        if user and verify_password(form.password.data, user.password_hash, user.salt):
+        if user and verify_password(form.password.data,
+                                    user.password_hash,
+                                    user.salt
+                                    ):
             flash('Login Successful', 'error')
 
             # Set user session
@@ -169,7 +179,8 @@ def index():
     if url_user_id:
         if form.validate_on_submit():
             short_url = generate_url()
-            store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
+            store_urls = Urls.query.filter_by(
+                short_url=form.short_url.data).first()
 
             # Check if custom_url is not empty
             if form.custom_url.data:
@@ -177,9 +188,13 @@ def index():
                 custom_url = '-'.join(joined[0:])
 
                 try:
-                    db_check = Urls.query.filter_by(custom_url=custom_url).first()
+                    db_check = Urls.query.filter_by(
+                        custom_url=custom_url).first()
                     if db_check:
-                        flash('Alias is not available. Please choose a different one.', 'error')
+                        flash('Alias is not available. \
+                              Please choose a different one.',
+                              'error'
+                              )
 
                     if custom_url:
                         short_url = custom_url
@@ -195,10 +210,12 @@ def index():
                         db.session.commit()
                 except IntegrityError as e:
                     db.session.rollback()
-                    # flash('Error: Alias is not available. Please choose a different one.', 'error')
                     short_url = ''
             else:
-                # If custom_url is empty, generate short URL without custom alias
+                """
+                    If custom_url is empty,
+                    generate short URL without custom alias
+                """
                 if store_urls is None:
                     store_urls = Urls(
                         long_url=form.long_url.data,
@@ -212,11 +229,14 @@ def index():
         # If user is not logged in, generate short URL without custom alias
         if form.validate_on_submit():
             short_url = generate_url()
-            store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
+            store_urls = Urls.query.filter_by(
+                short_url=form.short_url.data).first()
 
             # Check if short_url exists in db
             if store_urls is None:
-                store_urls = Urls(long_url=form.long_url.data, short_url=short_url)
+                store_urls = Urls(long_url=form.long_url.data,
+                                  short_url=short_url
+                                  )
                 db.session.add(store_urls)
                 db.session.commit()
 
