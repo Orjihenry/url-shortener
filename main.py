@@ -24,6 +24,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'user_login'
 
 
+# Url db model
 class Urls(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     long_url = db.Column(db.String(225), nullable=False)
@@ -37,6 +38,7 @@ class Urls(db.Model):
         return f'<Urls {self.short_url}>'
 
 
+# User db model
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(225), nullable=False)
@@ -53,6 +55,7 @@ class Users(UserMixin, db.Model):
         return str(self.id)
 
 
+# User Registration
 @app.route("/register", methods=['GET', 'POST'])
 def reg_user():
     """
@@ -85,6 +88,7 @@ def reg_user():
     return render_template("register.html", form=form, flash=flash)
 
 
+# User Login
 @app.route("/login", methods=['GET', 'POST'])
 def user_login():
     """
@@ -108,11 +112,13 @@ def user_login():
     return render_template("login.html", form=form, flash=flash)
 
 
+# User loader
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
 
 
+# Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -128,6 +134,7 @@ def logout():
     return redirect(url_for('user_login'))
 
 
+# Verify password
 def verify_password(password, password_hash, salt):
     """
         Verify if password is EqualTo hashed password in db
@@ -141,12 +148,14 @@ def verify_password(password, password_hash, salt):
     return computed_hash == password_hash
 
 
+# Generate random string for short url
 def generate_url(length=6):
     chars = string.ascii_letters + string.digits
     short_url = "".join(random.choice(chars) for _ in range(length))
     return short_url
 
 
+# Index route & Shorten URL
 @app.route("/", methods=["GET", "POST"])
 def index():
     form = UrlForm()
@@ -156,6 +165,7 @@ def index():
     url_visits = session.get(Urls.visits)
     url_user_id = session.get('user_id')
 
+    # Check if user is logged in
     if url_user_id:
         if form.validate_on_submit():
             short_url = generate_url()
@@ -199,10 +209,12 @@ def index():
                     db.session.commit()
 
     else:
+        # If user is not logged in, generate short URL without custom alias
         if form.validate_on_submit():
             short_url = generate_url()
             store_urls = Urls.query.filter_by(short_url=form.short_url.data).first()
 
+            # Check if short_url exists in db
             if store_urls is None:
                 store_urls = Urls(long_url=form.long_url.data, short_url=short_url)
                 db.session.add(store_urls)
@@ -217,6 +229,7 @@ def index():
                            )
 
 
+# Redirects to long url
 @app.route("/<short_url>")
 def redirect_url(short_url):
     """
@@ -248,5 +261,6 @@ def server_error(e):
     return render_template("500.html"), 500
 
 
+# Run app
 if __name__ == "__main__":
     app.run(debug=True)
