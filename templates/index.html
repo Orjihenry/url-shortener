@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %} Home {% endblock %}
 {% block content %}
 <!-- Section: Design Block -->
 <section class="background-radial-gradient overflow-hidden" style="height: 1000px;">
@@ -89,13 +89,8 @@
 <!-- Section: Design Block -->
 
 <script>
-  import {
-    Input,
-    initMDB
-  } from "mdb-ui-kit";
+  import { Input, initMDB } from "mdb-ui-kit";
 
-  initMDB({
-    Input
-  });
+  initMDB({ Input });
 </script>
 {% endblock %}

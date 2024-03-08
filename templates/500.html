@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>URL Shortener</title>
-</head>
-<body>
-    <br>
+{% extends 'base.html' %}
+{% block title %} Error 500 {% endblock %}
+{% block content %}
+  <section class="background-radial-gradient overflow-hidden">
     <center>
-      <h1> Error 500</h1>
-      <p> Server Error</p>
+      <h2> Error 500: Server Error</h2>
+      <p class="text-center">Something went wrong. Please try again later.</p>
+        
+      <p class="text-center">
+        Or click <a href="{{ url_for('index') }}">here</a> to go back to the homepage.
+      </p>
     </center>
-</body>
-</html>
+  </section>
+{% endblock %}
