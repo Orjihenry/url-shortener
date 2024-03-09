@@ -9,6 +9,17 @@
 
       <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
 
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+              {% for message in messages %}
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
         <div class="row gx-lg-5 align-items-center mb-5">
           <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
             <h2 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
@@ -28,7 +39,7 @@
             <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5 text-center">
-                <h2 class="my-4 display-5 fw-bold ls-tight"> Welcome {{ current_user.first_name }}</h2>
+                <h2 class="my-4 display-7 fw-bold ls-tight"> Welcome {{ current_user.first_name }}</h2>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                   <a type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#UpdateProfile">Update Profile</a>
                   <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#ChangePassword">Change Password</a>

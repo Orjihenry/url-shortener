@@ -25,14 +25,14 @@
 
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5">
-                  {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <ul class="flashes">
-                            {% for message in messages %}
-                                <li>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <ul class="flashes">
+                      {% for message in messages %}
+                        <li>{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
                 {% endwith %}
                 <form method="POST" action="{{ url_for('reg_user') }}">
                   {{ form.hidden_tag() }}
