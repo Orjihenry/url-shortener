@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
-from webforms import RegForm, UrlForm, LoginForm
+from webforms import RegForm, UrlForm, LoginForm, UpdateForm
 from datetime import datetime
 
 
@@ -130,11 +130,33 @@ def load_user(user_id):
     return Users.query.get(int(user_id))
 
 
+# User Profile
+@app.route('/update', methods=['GET', 'POST'])
+@login_required
+def update_profile():
+    update_user_form = UpdateForm()
+    if update_user_form.validate_on_submit():
+        current_user.first_name = update_user_form.first_name.data
+        current_user.last_name = update_user_form.last_name.data
+        current_user.email = update_user_form.email.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('User Updated Successfully', 'error')
+        return redirect(url_for('dashboard'))
+    else:
+        flash('User Update Failed', 'error')
+    return redirect(url_for('dashboard'))
+
+
 # Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    update_user_form = UpdateForm()
+    return render_template('dashboard.html',
+                           user=current_user,
+                           update_user_form=update_user_form
+                           )
 
 
 # Logout function
