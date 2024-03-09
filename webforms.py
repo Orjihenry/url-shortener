@@ -25,6 +25,14 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
+# Update User Form
+class UpdateForm(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired()])
+    last_name = StringField("Last Name", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
 # URL Shortener Form
 class UrlForm(FlaskForm):
     long_url = StringField("Enter URL", validators=[DataRequired()])
