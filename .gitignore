@@ -13,6 +13,7 @@ config.py
 
 #DB
 *.sqlite
+*.db
 
 # OS-Specific Files
 .DS_Store
