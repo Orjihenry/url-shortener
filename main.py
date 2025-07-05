@@ -4,19 +4,12 @@ import secrets
 import hashlib
 
 from flask import Flask, render_template, flash, session, url_for, redirect
-from flask_login import (
-                         UserMixin,
-                         login_user,
-                         LoginManager,
-                         login_required,
-                         logout_user,
-                         current_user
-                         )
+from flask_login import (UserMixin, login_user, LoginManager, login_required, logout_user, current_user )
+from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
-
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
-from webforms import RegForm, UrlForm, LoginForm, UpdateForm
+from webforms import ChangePasswordForm, RegForm, UrlForm, LoginForm, UpdateForm
 from datetime import datetime
 
 
@@ -24,6 +17,7 @@ app = Flask(__name__)
 
 app.config.from_object(app_config)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 salt = secrets.token_hex(16)
 
 login_manager = LoginManager()
@@ -148,14 +142,36 @@ def update_profile():
     return redirect(url_for('dashboard'))
 
 
+# Change Password
+@app.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    change_password_form = ChangePasswordForm()
+    if change_password_form.validate_on_submit():
+        hashed_pass = change_password_form.password_hash.data + salt
+        password = hashlib.sha256(hashed_pass.encode()).hexdigest()
+        current_user.password_hash = password
+        current_user.password_hash = change_password_form.password_hash.data
+        current_user.salt = change_password_form.salt.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Password Changed Successfully', 'error')
+        return redirect(url_for('dashboard'))
+    else:
+        flash('Password Change Failed', 'error')
+    return redirect(url_for('dashboard'))
+
+
 # Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     update_user_form = UpdateForm()
+    change_password_form = ChangePasswordForm()
     return render_template('dashboard.html',
                            user=current_user,
-                           update_user_form=update_user_form
+                           update_user_form=update_user_form,
+                           change_password_form=change_password_form
                            )
 
 
