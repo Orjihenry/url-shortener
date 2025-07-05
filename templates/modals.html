@@ -75,12 +75,32 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Update Password</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
-        </div>
+          <div class="form-outline mb-4" data-mdb-input-init>
+            {{ change_password_form.current_password(type="password", class="form-control", id="formControlDefault", placeholder="********") }}
+            {{ change_password_form.current_password.label(class="form-label") }}
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="form-outline" data-mdb-input-init>
+                {{ change_password_form.password_hash(type="password", class="form-control", id="formControlDefault", placeholder="********") }}
+                {{ change_password_form.password_hash.label(class="form-label") }}
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-outline" data-mdb-input-init>
+                {{ change_password_form.password_hash2(type="password", class="form-control", id="formControlDefault", placeholder="********") }}
+                {{ change_password_form.password_hash2.label(class="form-label") }}
+              </div>
+            </div>
+
+          </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-primary">Save changes</button>

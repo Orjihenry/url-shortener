@@ -33,6 +33,19 @@ class UpdateForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+# Change Password Form
+class ChangePasswordForm(FlaskForm):
+    current_password = PasswordField("Current Password", validators=[DataRequired()])
+    password_hash = PasswordField("New Password",
+                                  validators=[DataRequired(),
+                                              EqualTo("password_hash2",
+                                                      message="Passwords Must Match!")
+                                              ]
+                                  )
+    password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
 # URL Shortener Form
 class UrlForm(FlaskForm):
     long_url = StringField("Enter URL", validators=[DataRequired()])
