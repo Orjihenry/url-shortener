@@ -178,20 +178,6 @@ def logout():
     return redirect(url_for('user_login'))
 
 
-# Verify password
-def verify_password(password, password_hash, salt):
-    """
-        Verify if password is EqualTo hashed password in db
-        :param password:
-        :param password_hash:
-        :param salt:
-        :return:
-    """
-    hashed_pass = (password + salt).encode('utf-8')
-    computed_hash = hashlib.sha256(hashed_pass).hexdigest()
-    return computed_hash == password_hash
-
-
 # Generate random string for short url
 def generate_url(length=6):
     chars = string.ascii_letters + string.digits
