@@ -15,6 +15,7 @@
 }
 
 #radius-shape-1 {
+  border-radius: 70% 33% 67% 30% / 38% 62% 63% 37%;
   height: 220px;
   width: 220px;
   top: -60px;
@@ -26,7 +27,7 @@
 #radius-shape-2 {
   border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
   bottom: -60px;
-  right: -110px;
+  right: -60px;
   width: 300px;
   height: 300px;
   background: radial-gradient(#44006b, #ad1fff);
@@ -42,4 +43,8 @@
   .cus-margin {
     margin-left: 80px;
   }
+}
+
+.vh-lg-100 {
+  min-height: 100vh;
 }
