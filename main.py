@@ -1,8 +1,7 @@
 import random
 import string
 import secrets
-import hashlib
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, flash, session, url_for, redirect
 from flask_login import (UserMixin, login_user, LoginManager, login_required, logout_user, current_user )
 from flask_migrate import Migrate
@@ -18,7 +17,6 @@ app = Flask(__name__)
 app.config.from_object(app_config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-salt = secrets.token_hex(16)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -46,7 +44,6 @@ class Users(UserMixin, db.Model):
     last_name = db.Column(db.String(225), nullable=False)
     email = db.Column(db.String(225), nullable=False, unique=True)
     password_hash = db.Column(db.String(225))
-    salt = db.Column(db.String(32))  # Used for password hashing
     user_urls = db.relationship('Urls', backref='poster')
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -61,33 +58,33 @@ class Users(UserMixin, db.Model):
 @app.route("/register", methods=['GET', 'POST'])
 def reg_user():
     """
-        User registration: Uses flask.session to store users
+    User registration: Creates a new user with hashed password
     """
-    email = None
     form = RegForm()
 
     if form.validate_on_submit():
         # Checks if email is already taken
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
-            # Hash password using hashlib & secrets
-            hashed_pass = form.password_hash.data + salt
-            password = hashlib.sha256(hashed_pass.encode()).hexdigest()
-            user = Users(first_name=form.first_name.data,
-                         last_name=form.last_name.data,
-                         email=form.email.data,
-                         password_hash=password,
-                         salt=salt
-                         )
+            # Hash password using Werkzeug
+            hashed_password = generate_password_hash(form.password_hash.data, method='pbkdf2')
+            user = Users(
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                email=form.email.data,
+                password_hash=hashed_password
+            )
+
             db.session.add(user)
             db.session.commit()
 
-            flash('User Registered Successfully', 'error')
+            flash('User Registered Successfully', 'success')
             session['user_id'] = user.id
             login_user(user)
             return redirect(url_for('index'))
-        elif user is not None:
+        else:
             flash('Email already exists!', 'error')
+
     return render_template("register.html", form=form, flash=flash)
 
 
@@ -102,10 +99,7 @@ def user_login():
     form = LoginForm()
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
-        if user and verify_password(form.password.data,
-                                    user.password_hash,
-                                    user.salt
-                                    ):
+        if user and check_password_hash(user.password_hash, form.password.data):
             flash('Login Successful', 'error')
 
             # Set user session
