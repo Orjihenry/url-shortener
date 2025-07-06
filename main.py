@@ -129,7 +129,7 @@ def update_profile():
         current_user.email = update_user_form.email.data
         db.session.add(current_user)
         db.session.commit()
-        flash('User Updated Successfully', 'error')
+        flash('User Updated Successfully', 'success')
         return redirect(url_for('dashboard'))
     else:
         flash('User Update Failed', 'error')
@@ -140,19 +140,19 @@ def update_profile():
 @app.route('/change_password', methods=['GET', 'POST'])
 @login_required
 def change_password():
-    change_password_form = ChangePasswordForm()
-    if change_password_form.validate_on_submit():
-        hashed_pass = change_password_form.password_hash.data + salt
-        password = hashlib.sha256(hashed_pass.encode()).hexdigest()
-        current_user.password_hash = password
-        current_user.password_hash = change_password_form.password_hash.data
-        current_user.salt = change_password_form.salt.data
-        db.session.add(current_user)
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+
+        if not check_password_hash(current_user.password_hash, form.current_password.data):
+            flash('Current password is incorrect.', 'error')
+            return redirect(url_for('change_password'))
+        
+        new_hashed_password = generate_password_hash(form.password_hash.data, method='pbkdf2')
+        current_user.password_hash = new_hashed_password
+
         db.session.commit()
-        flash('Password Changed Successfully', 'error')
-        return redirect(url_for('dashboard'))
-    else:
-        flash('Password Change Failed', 'error')
+        flash('Password changed successfully.', 'success')
+
     return redirect(url_for('dashboard'))
 
 
