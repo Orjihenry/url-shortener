@@ -25,14 +25,15 @@
       rel="stylesheet"/>
     <!-- self-hosted css stylesheet-->
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-    <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="{{ url_for('static', filename='css/header.css') }}" rel="stylesheet">
+
 </head>
 <body>
-{% block content %}
+  {% include 'header.html' %}
+  {% block content %}
 
-{% endblock %}
-
+  {% endblock %}
+  {% include 'footer.html' %}
   <!-- MDB -->
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"></script>
