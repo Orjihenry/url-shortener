@@ -1,0 +1,9 @@
+.site-header {
+    background-color: #f2eded;
+}
+
+@media screen and (max-width: 992px) {
+    .float-end {
+        float: left !important;
+    }
+}
