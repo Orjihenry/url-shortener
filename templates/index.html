@@ -58,7 +58,7 @@
       </div>
     </div>
 </section>
-
+{% if not current_user.is_authenticated %}
 <section class="container">
   <div class="container px-4 px-md-5 text-center text-lg-start mt-5">
     <div class="card bg-glass text-center">
@@ -72,6 +72,7 @@
     </div>
   </div>
 </section>
+{% endif %}
 
 <section class="container">
   <div class="container px-4 px-md-5 text-center text-lg-start mt-5">
@@ -102,6 +103,60 @@
           <h4>Statistics</h4>
           <p>
             Monitor your custom links and see how each of them perfoms. Our dashboard offers you valuable insights.
+          </p>
+        </div>
+        
+        <div class="text-start mt-5">
+          <h4>Why Short URLs Matter ✂️</h4>
+  
+          <p>
+            Long URLs can look suspicious and overwhelming — research shows that users often assume long links are spam or untrustworthy. That’s why shortened URLs are the go-to for anyone looking to drive more traffic and make a strong first impression.
+            
+            Your URL is the gateway to your content — and often the very first thing your audience sees. A clean, short link instantly builds credibility, boosts click-through rates, and is far more likely to be trusted and shared.
+          </p>
+      
+          <hr class="w-100">
+  
+          <h4>The Benefits of Using Short Links 💡</h4>
+          <ul class="p-0">
+            <li class="list-group-item py-1 d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Trust & Reputation:</div>
+                Users are more likely to click a short, clean URL than a long, cluttered one.
+              </div>
+            </li>
+            <li class="list-group-item py-1 d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Shareability:</div>
+                Short links are easier to remember, type, copy, and paste — especially from print materials or offline media.
+              </div>
+            </li>
+            <li class="list-group-item py-1 d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Better Design:</div>
+                Aesthetically pleasing links enhance your content’s appearance and professionalism.
+            </li>
+            <li class="list-group-item py-1 d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Higher Engagement:</div>
+                Studies show that short URLs are shared more frequently than longer counterparts.
+            </li>
+            <li class="list-group-item py-1 d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Platform-Friendly:</div>
+                Short links are perfect for platforms like Twitter and SMS where character limits apply.
+              </div>
+            </li>
+          </ul>
+
+          <hr class="w-100">
+  
+          <h4>Simplicity You Can Trust 🔒</h4>
+  
+          <p>
+            While URL redirection might sound complex, URL Shortener makes it simple, safe, and seamless. Unlike other shorteners, URL Shortener offers custom URLs, support, and detailed analytics — with no ads, no spam, and no redirects that confuse users.
+  
+            Whether you’re sharing links on social media, in a newsletter, or offline, URL Shortener helps you get your audience to the right place — fast.
           </p>
         </div>
       </div>
