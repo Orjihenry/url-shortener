@@ -6,21 +6,21 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarRightAlignExample">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+        <ul class="site-header navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item px-3">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item px-3">
             <a class="nav-link" href="#">About</a>
           </li>
 
-          <li class="nav-item dropdown">
+          <li class="nav-item px-3 dropdown">
             <a data-mdb-dropdown-init class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-expanded="false">
               Solutions
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
-                <a class="dropdown-item" href="#">Short Url</a>
+                <a class="dropdown-item" href="{{ url_for('index') }}">Short Url</a>
               </li>
               <li>
                 <a class="dropdown-item" href="#">QR Generator</a>
@@ -28,7 +28,7 @@
             </ul>
           </li>
           {% if current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li class="nav-item px-3"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
           {% endif %}
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
