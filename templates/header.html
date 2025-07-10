@@ -29,6 +29,23 @@
           </li>
           {% if current_user.is_authenticated %}
             <li class="nav-item px-3"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+
+            <li class="nav-item px-3 dropdown">
+              <a data-mdb-dropdown-init class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-expanded="false">
+                Profile
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('index') }}" data-bs-toggle="modal" data-bs-target="#UpdateProfile">Update Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#ChangePassword">Update Password</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#DeleteAccount">Delete Account</a>
+                </li>
+              </ul>
+            </li>
           {% endif %}
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
