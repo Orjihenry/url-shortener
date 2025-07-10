@@ -58,7 +58,10 @@
                 <td>{{ url.visits }}</td>
                 <td>
                   <a href="#" class="btn btn-primary btn-sm mb-2">Modify</a>
-                  <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                  <form method="POST" action="{{ url_for('delete_url_record', short_url=url.short_url) }}">
+                    {{ delete_url_form.hidden_tag() }}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
                 </td>
               </tr>
             {% endfor %}

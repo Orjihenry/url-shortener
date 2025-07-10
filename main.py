@@ -1,6 +1,5 @@
 import random
 import string
-import secrets
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, flash, session, url_for, redirect
 from flask_login import (UserMixin, login_user, LoginManager, login_required, logout_user, current_user )
@@ -8,7 +7,7 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
-from webforms import ChangePasswordForm, RegForm, UrlForm, LoginForm, UpdateForm
+from webforms import ChangePasswordForm, RegForm, UrlForm, LoginForm, UpdateForm, DeleteForm
 from datetime import datetime
 
 
@@ -162,10 +161,12 @@ def change_password():
 def dashboard():
     update_user_form = UpdateForm()
     change_password_form = ChangePasswordForm()
+    delete_url_form = DeleteForm()
     return render_template('dashboard.html',
                            user=current_user,
                            update_user_form=update_user_form,
-                           change_password_form=change_password_form
+                           change_password_form=change_password_form,
+                           delete_url_form=delete_url_form
                            )
 
 
@@ -288,6 +289,29 @@ def redirect_url(short_url):
         return redirect(url_entry.long_url)
     else:
         return render_template('404.html')
+    
+# delete URL records
+@app.route("/delete/<short_url>", methods=["POST"])
+@login_required
+def delete_url_record(short_url):
+    delete_url_form = DeleteForm()
+    """
+        Deletes short URL record from the db.
+        Only accessible to the logged-in user who created it.
+        :param short_url:
+        :return:
+    """
+    if delete_url_form.validate_on_submit:
+        url_entry = Urls.query.filter_by(short_url=short_url).first()
+
+        if url_entry and url_entry.url_user_id == current_user.id:
+            db.session.delete(url_entry)
+            db.session.commit()
+            flash("URL record deleted successfully.", "success")
+        else:
+            flash("You do not have permission to delete this URL.", "error")
+
+    return redirect(url_for("dashboard"))
 
 
 # Error handlers

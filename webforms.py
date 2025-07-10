@@ -52,3 +52,7 @@ class UrlForm(FlaskForm):
     short_url = StringField("Generated Short URL")
     custom_url = StringField("Enter Custom URL Alias")
     submit = SubmitField('Submit')
+
+# Delete Form
+class DeleteForm(FlaskForm):
+    pass
