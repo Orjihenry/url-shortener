@@ -1,14 +1,15 @@
-# URL Shortener Project
+# URL Shortener Project - DubLynk
 
 ## Overview
 
-This is a URL shortener project that allows both registered and unregistered users to create shortened versions of URLs. For registered users, additional features include the ability to generate custom URLs, track visits on both custom and non-custom URLs, and view the history of generated short URLs.
+DubLynk allows both registered and unregistered users to create shortened versions of URLs and QR codes. For registered users, additional features include the ability to generate custom URLs, track visits on both custom and non-custom URLs, and view the history of generated short URLs.
 
 ## Features
 
 - **URL Shortening:**
   - Both registered and unregistered users can create shortened URLs.
   - Registered users can generate custom URLs and track visits on all URLs.
+  - Both registered and unregistered users can generate QR codes for Shortened URLS.
 
 - **Analytics:**
   - The system automatically tracks the number of visits to each shortened URL.
