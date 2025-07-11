@@ -155,6 +155,28 @@ def change_password():
     return redirect(url_for('dashboard'))
 
 
+@app.route("/delete/<int:user_id>", methods=["POST"])
+@login_required
+def delete_user(user_id):
+    delete_user_form = DeleteUserForm()
+
+    if current_user.id != user_id:
+        flash("You can only delete your own account.", "error")
+        return redirect(url_for("dashboard"))
+
+    user = Users.query.get_or_404(user_id)
+
+    if delete_user_form.validate_on_submit():
+        logout_user()
+        db.session.delete(user)
+        db.session.commit()
+        flash("Your account has been deleted.", "success")
+        return redirect(url_for("user_login"))
+
+    flash("Deletion failed. Please try again.", "error")
+    return redirect(url_for("dashboard"))
+
+
 # Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -162,11 +184,13 @@ def dashboard():
     update_user_form = UpdateForm()
     change_password_form = ChangePasswordForm()
     delete_url_form = DeleteForm()
+    delete_user_form = DeleteUserForm()
     return render_template('dashboard.html',
                            user=current_user,
                            update_user_form=update_user_form,
                            change_password_form=change_password_form,
-                           delete_url_form=delete_url_form
+                           delete_url_form=delete_url_form,
+                           delete_user_form=delete_user_form
                            )
 
 
