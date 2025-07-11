@@ -45,6 +45,10 @@ class ChangePasswordForm(FlaskForm):
     password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+# Delete User Form
+class DeleteUserForm(FlaskForm):
+    pass
+
 
 # URL Shortener Form
 class UrlForm(FlaskForm):
@@ -53,6 +57,6 @@ class UrlForm(FlaskForm):
     custom_url = StringField("Enter Custom URL Alias")
     submit = SubmitField('Submit')
 
-# Delete Form
+# Delete URL Form
 class DeleteForm(FlaskForm):
     pass
