@@ -108,18 +108,18 @@
               </div>
 
             </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button class="btn btn-primary btn-sub-val">Save changes</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary btn-sub-val">Save changes</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 
-  <!-- Delete User Modal -->
-  <div class="modal fade" id="DeleteAccount" tabindex="-1" aria-labelledby="DeleteAccount" aria-hidden="true">
+  <!-- Delete Account Modal -->
+  <div class="modal fade" id="DeleteAccount" tabindex="-1" aria-labelledby="DeleteAccount">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -142,14 +142,13 @@
         </div>
         <div class="modal-footer">
           <form method="POST" action="{{ url_for('delete_user', user_id=current_user.id) }}">
-            {{ delete_user_form.hidden_tag() }}
+            {{ delete_user_form.csrf_token(id='csrf_token_delete_user') }}
             <button class="btn btn-danger">Delete My Account</button>
           </form>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
   <div class="modal fade" id="DeleteAccount" tabindex="-1" aria-labelledby="DeleteAccount" aria-hidden="true">
