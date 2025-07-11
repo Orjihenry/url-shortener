@@ -3,7 +3,6 @@
 {% block content %}
 <!-- Section: Design Block -->
 
-
 <section class="container">
   <div class="container px-4 px-md-5 text-center text-lg-start mt-5">
     <div class="card bg-glass text-center">
@@ -22,31 +21,26 @@
       
         <form method="POST" action="/" class="">
           {{ form.hidden_tag() }}
+          <div class="form-outline mb-4" data-mdb-input-init>
+            {{ form.long_url(type="url", class="form-control form-control-lg") }}
+            {{ form.long_url.label(class="form-label") }}
+          </div>
           {% if current_user.is_authenticated %}
           <div class="form-outline mb-4" data-mdb-input-init>
-            {{ form.long_url(type="url", class="form-control form-control-lg", id="formControlDefault") }}
-            {{ form.long_url.label(class="form-label") }}
-          </div>
-          <div class="form-outline mb-4" data-mdb-input-init>
-            {{ form.custom_url(class="form-control form-control-lg", maxlength="16", id="formControlDefault") }}
+            {{ form.custom_url(class="form-control form-control-lg", maxlength="16") }}
             {{ form.custom_url.label(class="form-label") }}
-          </div>
-          {% else %}
-          <div class="form-outline mb-4" data-mdb-input-init>
-            {{ form.long_url(type="url", class="form-control form-control-lg", id="formControlDefault") }}
-            {{ form.long_url.label(class="form-label") }}
           </div>
           {% endif %}
 
           {% if short_url %}
           <div class="form-outline mb-4" data-mdb-input-init>
-            <input type="text" class="form-control" id="formControlDefault" disabled
+            <input type="text" class="form-control form-control-lg" disabled
               value="{{ request.url_root }}{{ short_url }}">
             {{ form.short_url.label(class="form-label") }}
           </div>
           {% else %}
           <div class="form-outline mb-4" data-mdb-input-init>
-            <input type="text" class="form-control" id="form3Example2" disabled>
+            <input type="text" class="form-control" disabled>
             {{ form.short_url.label(class="form-label") }}
           </div>
           {% endif %}

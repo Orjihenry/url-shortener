@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from config import app_config
 from flask_sqlalchemy import SQLAlchemy
-from webforms import ChangePasswordForm, RegForm, UrlForm, LoginForm, UpdateForm, DeleteForm
+from webforms import ChangePasswordForm, RegForm, UrlForm, LoginForm, UpdateForm, DeleteForm, DeleteUserForm
 from datetime import datetime
 
 
@@ -313,7 +313,8 @@ def redirect_url(short_url):
         return redirect(url_entry.long_url)
     else:
         return render_template('404.html')
-    
+
+
 # delete URL records
 @app.route("/delete/<short_url>", methods=["POST"])
 @login_required
