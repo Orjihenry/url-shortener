@@ -9,6 +9,7 @@ from config import app_config
 from flask_sqlalchemy import SQLAlchemy
 from webforms import ChangePasswordForm, RegForm, UrlForm, LoginForm, UpdateForm, DeleteForm, DeleteUserForm
 from datetime import datetime
+from generate_qr import generate_qr_code
 
 
 app = Flask(__name__)
@@ -284,6 +285,9 @@ def index():
                                   )
                 db.session.add(store_urls)
                 db.session.commit()
+
+                full_short_url = request.url_root + short_url
+                generate_qr_code(full_short_url, short_url, logo_path='static/logo.png')
 
     return render_template("index.html",
                            form=form,

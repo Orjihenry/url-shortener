@@ -7,7 +7,7 @@
   <div class="container px-4 px-md-5 text-center text-lg-start mt-5">
     <div class="card bg-glass text-center">
       <div class="card-body px-4 py-4 px-md-5">
-        <h1 class="text-center mb-3">URL Shortener</h1>
+        <h1 class="text-center mb-3">DubLynk</h1>
         <h4 class="mb-4">Simplify Your Links</h4>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
@@ -37,6 +37,11 @@
             <input type="text" class="form-control form-control-lg" disabled
               value="{{ request.url_root }}{{ short_url }}">
             {{ form.short_url.label(class="form-label") }}
+
+              <img src="{{ url_for('static', filename='qr/' + short_url + '.png') }}" alt="QR Code" class="img-fluid" width="150">
+              <a href="{{ url_for('static', filename='qr/' + short_url + '.png') }}" download="{{ short_url }}.svg" class=" mt-3">
+                Download QR Code
+              </a>
           </div>
           {% else %}
           <div class="form-outline mb-4" data-mdb-input-init>
@@ -47,11 +52,13 @@
           {{ form.submit(class="btn btn-primary btn-block mb-4 btn-sub-val btn-short") }}
         </form>
         <p class="">
-          Shorten long URLs in seconds and monitor performance with real-time stats—all for free.
+          Shorten long URLs and Generate QR codes in seconds. Monitor performance with real-time stats. All for free!
         </p>
       </div>
     </div>
+  </div>
 </section>
+
 {% if not current_user.is_authenticated %}
 <section class="container">
   <div class="container px-4 px-md-5 text-center text-lg-start mt-5">
@@ -75,7 +82,7 @@
         <div class="card bg-glass my-3 col-md-6">
           <h4>Reliable</h4>
           <p>
-            Use any link, no matter what size, URL Shortener always shortens.
+            Use any link, no matter what size, DubLynk always shortens.
           </p>
         </div>
         
@@ -89,7 +96,7 @@
         <div class="card bg-glass my-3 col-md-6">
           <h4>Friendly</h4>
           <p>
-            Our URL Shortener offers an easy and user-friendly way to shorten and manage your oringinal, long links.
+            DubLynk offers an easy and user-friendly way to shorten and manage your oringinal, long links.
           </p>
         </div>
         
@@ -122,7 +129,7 @@
             <li class="list-group-item py-1 d-flex justify-content-between align-items-start">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">Shareability:</div>
-                Short links are easier to remember, type, copy, and paste — especially from print materials or offline media.
+                Short links are easier to remember, type, copy, and paste. Especially from print materials or offline media.
               </div>
             </li>
             <li class="list-group-item py-1 d-flex justify-content-between align-items-start">
@@ -148,9 +155,9 @@
           <h4>Simplicity You Can Trust 🔒</h4>
   
           <p>
-            While URL redirection might sound complex, URL Shortener makes it simple, safe, and seamless. Unlike other shorteners, URL Shortener offers custom URLs, support, and detailed analytics — with no ads, no spam, and no redirects that confuse users.
+            While URL redirection might sound complex, DubLynk makes it simple, safe, and seamless. Unlike other shorteners, DubLynk offers custom URLs, support, and detailed analytics — with no ads, no spam, and no redirects that confuse users.
   
-            Whether you’re sharing links on social media, in a newsletter, or offline, URL Shortener helps you get your audience to the right place — fast.
+            Whether you’re sharing links on social media, in a newsletter, or offline, DubLynk helps you get your audience to the right place — fast.
           </p>
         </div>
       </div>
