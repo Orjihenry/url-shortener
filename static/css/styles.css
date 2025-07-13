@@ -39,7 +39,7 @@
   backdrop-filter: saturate(200%) blur(25px);
 }
 
-@media (min-width: 767.98px) {
+@media (min-width: 768px) {
   .cus-margin {
     margin-left: 80px;
   }
